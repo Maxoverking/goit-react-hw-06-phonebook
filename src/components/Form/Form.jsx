@@ -1,8 +1,11 @@
 import { FormContainer,Forma,Input,Label } from './Form.styled'
 import { nanoid } from 'nanoid'
 import { useState } from 'react'
+import { useDispatch} from 'react-redux'
+import { addNewContactsAction } from 'redux/actions';
 
-export default function Form({ submitData }) {
+export default function Form() {
+    const dispatch = useDispatch();
     const uniqueId = nanoid();
 
     const [id, setId] = useState('');
@@ -21,12 +24,12 @@ export default function Form({ submitData }) {
 
     const onSubmitForm = evt => {
         evt.preventDefault();
-        //Передаем данные в Арр через пропс submitData
-        submitData({
+        //Передаем данные в Store 
+        dispatch(addNewContactsAction({
             name: name,
             number: number,
-            id: id
-        });
+            id: id,
+        }));
         resetForm();
     };
 
