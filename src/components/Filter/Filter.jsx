@@ -1,7 +1,15 @@
 import { Label } from "components/Form/Form.styled"
 import { Input } from "./Filter.styled"
-import PropTypes from 'prop-types';
-export default function Filter({ value, onChangeProps }) {
+import { filterContactsAction } from "redux/actions";
+import { useDispatch,useSelector } from 'react-redux';
+
+export default function Filter() {
+    const dispatch = useDispatch();
+    const filter = useSelector(state => state.filters);
+
+    const chooseFilterContact = (evt) => {
+    dispatch(filterContactsAction(evt.target.value));
+  }
     return (
         <>
             <Label>Find contacts by name</Label>
@@ -12,13 +20,9 @@ export default function Filter({ value, onChangeProps }) {
                 pattern="^[a-zA-Zа-яА-Я]+(([' -]
                 [a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="May contain only letters"
-                value={value}
-                onChange={onChangeProps}
+                value={filter}
+                onChange={chooseFilterContact}
                 required />
         </>
     )
-}
-Filter.propTypes = {
-    value: PropTypes.string.isRequired,
-    onChangeProps: PropTypes.func.isRequired,
 }

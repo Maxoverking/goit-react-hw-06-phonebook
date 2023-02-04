@@ -1,36 +1,39 @@
 import { createStore, combineReducers } from 'redux';
 import { devToolsEnhancer } from '@redux-devtools/extension';
-import contactsData from '../components/contactsData/contacts.json';
-import { CONTACT, DELETE_CONTACT } from './constants';
+import { initialState } from './init.state';
+import { contactsReducer, filterReducer } from './reducer';
 
-const initialState = {
-  contacts: contactsData,
-  // filter: '',
-};
+// import { CONTACT, DELETE_CONTACT, FILTER } from './constants';
 
-const contactsReducer = (state = initialState, { type, payload }) => {
-  switch (type) {
-    case CONTACT:
-      return [...state, payload];
-    case DELETE_CONTACT:
-      return [
-        ...state,
-        state.contacts.filter(contact => contact.id !== payload),
-      ];
+// const initialState = {
+//   contacts: contactsData,
+//   filters: '',
+// };
 
-    default:
-      return state;
-  }
-};
+// const contactsReducer = (state = initialState, { type, payload }) => {
+//   switch (type) {
+//     case CONTACT:
+//       return [...state, payload];
+//     case DELETE_CONTACT:
+//       return state.filter(contact => contact.id !== payload);
+
+//     default:
+//       return state;
+//   }
+// };
+// const filterReducer = (state = initialState, { type, payload }) => {
+//   switch (type) {
+//     case FILTER:
+//       return payload;
+//     default:
+//       return state;
+//   }
+// };
 
 const rootReducer = combineReducers({
   contacts: contactsReducer,
+  filters: filterReducer,
 });
 
 const enhancer = devToolsEnhancer();
 export const store = createStore(rootReducer, initialState, enhancer);
-
-// store.dispatch({ type: FILTER });
-// console.log('🚀  store', store.getState());
-// store.dispatch({ type: CONTACT });
-// console.log('🚀  store', store.getState());
