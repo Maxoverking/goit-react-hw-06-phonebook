@@ -15,7 +15,6 @@ export default function Contacts ({ contacts, deleteContact }){
                             //передача id в метод для удаления обьекта
                         >DELETE</button> 
                     </div>
-                     
                 </LI>    
             ))}
             </UL>

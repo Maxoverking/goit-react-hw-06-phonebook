@@ -1,10 +1,9 @@
-import { FormContainer,Forma,Input,Label } from './Form.styled'
-import { nanoid } from 'nanoid'
-import { useState } from 'react'
+import { FormContainer, Forma, Input, Label } from './Form.styled';
+import { nanoid } from 'nanoid';
+import { useState } from 'react';
 
 export default function Form({submitData}) {
     const uniqueId = nanoid();
-
     const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
@@ -19,7 +18,7 @@ export default function Form({submitData}) {
         }
     };
 
-      const onSubmitForm = evt => {
+    const onSubmitForm = evt => {
         evt.preventDefault();
         //Передаем данные в Арр через пропс submitData
         submitData({

@@ -1,7 +1,47 @@
-import { createStore, combineReducers } from 'redux';
-import { devToolsEnhancer } from '@redux-devtools/extension';
+// import { contactsReducer, filterReducer } from './reducer';// было
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { initialState } from './init.state';
-import { contactsReducer, filterReducer } from './reducer';
+import { contactsReducer, filterReducer } from './contacts.slice';
+// import './contacts.slice';
+
+const persistConfig = {
+  key: 'myContactsList',
+  storage,
+  whitelist: ['contacts'],
+  // blacklist: ['filters'],
+};
+
+const rootReducer = combineReducers({
+  contacts: contactsReducer,
+  filters: filterReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  preloadedState: initialState, //начальний стейт
+  devTools: true, //включаем toolзи
+  reducer: persistedReducer, //добавляем редюсер
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+});
+
+export const persistor = persistStore(store);
 
 // import { CONTACT, DELETE_CONTACT, FILTER } from './constants';
 
@@ -29,11 +69,3 @@ import { contactsReducer, filterReducer } from './reducer';
 //       return state;
 //   }
 // };
-
-const rootReducer = combineReducers({
-  contacts: contactsReducer,
-  filters: filterReducer,
-});
-
-const enhancer = devToolsEnhancer();
-export const store = createStore(rootReducer, initialState, enhancer);
